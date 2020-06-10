@@ -7,14 +7,15 @@ import scheduleReader.ScheduleInterpreterA;
 
 public class ScheduleAnalyzer {
 
-	public static void intelligentMerge(ArrayList<String> paths) {
-		/**TreeSet<WeeklyTimeCard> fullList = new TreeSet<WeeklyTimeCard>();
+	public static TreeSet<WeeklyShiftSheet> getShiftSheetsFromPaths(ArrayList<String> paths) {
+		TreeSet<WeeklyShiftSheet> fullList = new TreeSet<>();
 		for(String path : paths) {
-			WeeklyTimeCard timeCardSheet = ScheduleInterpreterA.convertToTimeArray(path);
+			WeeklyShiftSheet timeCardSheet = ScheduleInterpreterA.convertToTimeArray(path);
 			fullList.add(timeCardSheet);
 
 			System.out.println(timeCardSheet.toString());
 			System.out.println();
-		}**/
+		}
+		return fullList;
 	}
 }

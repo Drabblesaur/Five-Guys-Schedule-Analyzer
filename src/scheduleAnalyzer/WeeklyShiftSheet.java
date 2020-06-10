@@ -26,7 +26,7 @@ public class WeeklyShiftSheet extends ArrayList<TimeCardRow> implements Comparab
 	}
 	
 	public String toString(){
-		String sum = "--Shift from " + this.getFirstDate() + " - " + this.getLastDate() + "--\n";
+		String sum = "################# Shift from " + this.getFirstDate() + " - " + this.getLastDate() + "################\n";
 		for(TimeCardRow r : this){
 			sum += (r.toString() + "\n ");
 		}
