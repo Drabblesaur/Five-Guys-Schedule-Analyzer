@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import Assets.TimeCardRow;
 
-public class WeeklyTimeCard extends ArrayList<TimeCardRow> implements Comparable<WeeklyTimeCard>{
+public class WeeklyShiftSheet extends ArrayList<TimeCardRow> implements Comparable<WeeklyShiftSheet>{
 	public LocalDate getFirstDate() {
 		if(this.size() > 0) {
 			return this.get(0).getFirstDay();
@@ -21,12 +21,12 @@ public class WeeklyTimeCard extends ArrayList<TimeCardRow> implements Comparable
 		}
 	}
 
-	public int compareTo(WeeklyTimeCard other) {
+	public int compareTo(WeeklyShiftSheet other) {
 		return this.getFirstDate().compareTo(other.getFirstDate());
 	}
 	
 	public String toString(){
-		String sum = "";
+		String sum = "################# Shift from " + this.getFirstDate() + " - " + this.getLastDate() + "################\n";
 		for(TimeCardRow r : this){
 			sum += (r.toString() + "\n ");
 		}

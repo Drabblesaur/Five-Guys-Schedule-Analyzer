@@ -1,25 +1,20 @@
 package Assets;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-public class TimeCardRow implements Comparable<TimeCardRow> {
+public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRow> {
 	private String name;
 	private boolean isMinor;
-	private Day[] week;
 
-	public TimeCardRow(String name, Day[] week) {
+	public TimeCardRow(String name, ArrayList<Day> week) {
+		super(week);
 		this.name = name;
-		this.week = week;
 		if (name.contains("*")) {
 			isMinor = true;
 			this.name = name.substring(0, name.length() - 1);
 		} else {
 			isMinor = false;
-		}
-
-		if (week.length != 7) {
-			throw new IllegalArgumentException(
-					"There must be 7 elements in a timecard. This argument contains: " + week.length);
 		}
 	}
 
@@ -32,26 +27,26 @@ public class TimeCardRow implements Comparable<TimeCardRow> {
 	}
 
 	public Day getShift(int i) {
-		if (i >= 0 && i <= 7) {
-			return week[i];
+		if (i >= 0 && i <= this.size()) {
+			return this.get(i);
 		} else {
 			return null;
 		}
 	}
 
-	public Day[] getTimeCard() {
-		return week;
+	public ArrayList<Day> getTimeCard() {
+		return this;
 	}
 
 	public LocalDate getFirstDay() {
-		return week[0].getDate();
+		return this.get(0).getDate();
 	}
 	public LocalDate getLastDay() {
-		return week[7].getDate();
+		return this.get(this.size()-1).getDate();
 	}
 
 	public int hashCode() {
-		return name.hashCode() + week.hashCode();
+		return name.hashCode() + this.hashCode();
 	}
 
 	public int compareTo(TimeCardRow other) {
@@ -62,6 +57,10 @@ public class TimeCardRow implements Comparable<TimeCardRow> {
 		}
 	}
 	public String toString(){
-		return this.name + " |\t" + this.isMinor + " " + this.week[0].getShift() + " " + this.week[1].getShift() + " " + this.week[2].getShift() + " " + this.week[3].getShift() + " " + this.week[4].getShift() + " " + this.week[5].getShift() + " " + this.week[6].getShift();
+		String val =  this.name + " |\t" + this.isMinor + " ";
+		for(Day i : this){
+			val += i.getShift() + "   ";
+		}
+		return val;
 	}
 }
