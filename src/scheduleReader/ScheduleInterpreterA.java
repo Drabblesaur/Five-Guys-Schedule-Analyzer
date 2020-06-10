@@ -3,6 +3,7 @@ package scheduleReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import Assets.Day;
 import Assets.TimeCardRow;
@@ -17,15 +18,15 @@ public class ScheduleInterpreterA {
 		String[][] sheet = CSVReader.convertToArray(path);
 		for(String[] row : sheet) {
 			if(rowCheck(row)) {
-				String name = row[0];
-				ArrayList<Day> times = getTime(row, sheet[0]);
+				String name = row[0].trim();
+				TreeSet<Day> times = getTime(row, sheet[0]);
 				fullTimeCard.add(new TimeCardRow(name, times));
 			}
 		}
 		return fullTimeCard;
 	}
-	private static ArrayList<Day> getTime(String[] row, String[] header) {
-		ArrayList<Day> shifts = new ArrayList<>(7);
+	private static TreeSet<Day> getTime(String[] row, String[] header) {
+		TreeSet<Day> shifts = new TreeSet<>();
 		int entries = 0;
 		for(int i = 1; i < row.length && entries < 7; i++) {
 			if(row[i].length() > 0) {

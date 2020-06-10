@@ -1,13 +1,13 @@
 package Assets;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
-public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRow> {
+public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow> {
 	private String name;
 	private boolean isMinor;
 
-	public TimeCardRow(String name, ArrayList<Day> week) {
+	public TimeCardRow(String name, TreeSet<Day> week) {
 		super(week);
 		this.name = name;
 		if (name.contains("*")) {
@@ -15,6 +15,12 @@ public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRo
 			this.name = name.substring(0, name.length() - 1);
 		} else {
 			isMinor = false;
+		}
+	}
+
+	public void merge(TimeCardRow other){
+		for(Day r : other){
+			this.add(r);
 		}
 	}
 
@@ -26,23 +32,20 @@ public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRo
 		return isMinor;
 	}
 
-	public Day getShift(int i) {
-		if (i >= 0 && i <= this.size()) {
-			return this.get(i);
-		} else {
-			return null;
+	public Day getShift(LocalDate date) {
+		for(Day r : this){
+			if(date.equals(r.getDate())){
+				return r;
+			}
 		}
-	}
-
-	public ArrayList<Day> getTimeCard() {
-		return this;
+		return null;
 	}
 
 	public LocalDate getFirstDay() {
-		return this.get(0).getDate();
+		return this.first().getDate();
 	}
 	public LocalDate getLastDay() {
-		return this.get(this.size()-1).getDate();
+		return this.last().getDate();
 	}
 
 	public int hashCode() {
@@ -61,6 +64,16 @@ public class TimeCardRow extends ArrayList<Day> implements Comparable<TimeCardRo
 		for(Day i : this){
 			val += i.getShift() + "   ";
 		}
+		val += "("+this.size() + " elements)";
+		return val;
+	}
+
+	public String debugToString(){
+		String val =  this.name + " |\t";
+		for(Day i : this){
+			val += "[" + i.toString() + "]     ";
+		}
+		val += "("+this.size() + " elements)";
 		return val;
 	}
 }
