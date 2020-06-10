@@ -26,9 +26,13 @@ public class WeeklyTimeCard extends ArrayList<TimeCardRow> implements Comparable
 	}
 	
 	public String toString(){
+<<<<<<< Updated upstream:src/scheduleAnalyzer/WeeklyTimeCard.java
 		String sum = "";
+=======
+		String sum = "################# Shift from " + this.getFirstDate() + " - " + this.getLastDate() + "   ################\n";
+>>>>>>> Stashed changes:src/scheduleAnalyzer/WeeklyShiftSheet.java
 		for(TimeCardRow r : this){
-			sum += (r.toString() + "\n ");
+			sum += (r.toString() + "\n");
 		}
 		return sum;
 	}
