@@ -41,20 +41,16 @@ public class ScheduleAnalyzer {
 				boolean alreadyExists = false;
 				for(TimeCardRow existing : mergedShifts){
 					if(selectedRow.getName().equals(existing.getName())){
-						System.out.println(existing.getName() + " = " + selectedRow.getName());
 						existing.merge(selectedRow);
 						alreadyExists = true;
 						break;
 					}
 				}
 				if(alreadyExists==false){
-					System.out.println("ADDED " + selectedRow.getName());
 					mergedShifts.add(selectedRow);
 				}
 			}
 		}
 		return mergedShifts;
 	}
-
-
 }

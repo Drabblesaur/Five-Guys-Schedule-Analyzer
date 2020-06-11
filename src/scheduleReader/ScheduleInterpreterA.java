@@ -11,15 +11,24 @@ import scheduleAnalyzer.WeeklyShiftSheet;
 public class ScheduleInterpreterA {
 	private final static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy");
 	
+	/**
+	 * Converts a path into a WeekleyShifrSheet
+	 * @param row the path of the schedule v1
+	 * @return an object representing the same values, but in an object format
+	 */
 	public static WeeklyShiftSheet convertToTimeArray(String path) {
-
 		WeeklyShiftSheet fullTimeCard = new WeeklyShiftSheet();
 		String[][] sheet = CSVReader.convertToArray(path);
+
+		boolean isManager = false;
 		for(String[] row : sheet) {
+			if(row[0].contains("MIC")){
+				isManager = true;
+			}
 			if(rowCheck(row)) {
 				String name = row[0].trim();
 				TreeSet<Day> times = getTime(row, sheet[0]);
-				fullTimeCard.add(new TimeCardRow(name, times));
+				fullTimeCard.add(new TimeCardRow(name, isManager, times));
 			}
 		}
 		return fullTimeCard;
@@ -35,7 +44,7 @@ public class ScheduleInterpreterA {
 			}else{
 				shift = row[i-1];
 			}
-			shifts.add(new Day(date, shift));
+			shifts.add(new Day(date, convertToFormal(shift)));
 		}
 		return shifts;
 	}
@@ -62,5 +71,44 @@ public class ScheduleInterpreterA {
 			return false;
 		}
 		return true;
+	}
+	private static String convertToFormal(String shift){
+		//remove suffixes
+		if(shift.contains("cl") || shift.contains("CL")){
+			shift = shift.substring(0, shift.length()-2) + "11";
+		}
+		if(shift.contains("pm") || shift.contains("PM")){
+			shift = shift.substring(0, shift.length()-2);
+		}
+
+		//add colons if needed
+		if(shift.contains("-") && shift.indexOf('-') == 4){
+			shift = shift.substring(0, 2) + ":" + shift.substring(2);
+		}
+		if(shift.contains("-") && shift.indexOf('-') == 3){
+			shift = shift.substring(0, 1) + ":" + shift.substring(1);
+		}
+		if(shift.contains("-") && shift.length() - shift.indexOf('-') == 5){
+			shift = shift.substring(0, shift.length()-2) + ":" + shift.substring(shift.length()-2);
+		}
+		if(shift.contains("-") && shift.length() - shift.indexOf('-') == 4){
+			shift = shift.substring(0, shift.length()-2) + ":" + shift.substring(shift.length()-2);
+		}
+
+		//add :00 if needed
+		if(shift.contains("-") && shift.indexOf('-') == 1){
+			shift = shift.substring(0, 1) + ":00" + shift.substring(1);
+		}
+		else if(shift.contains("-") && shift.indexOf('-') == 2){
+			shift = shift.substring(0, 2) + ":00" + shift.substring(2);
+		}
+
+		if(shift.contains("-") && shift.charAt(shift.length()-2) == '-'){
+			shift = shift.substring(0, shift.length()) + ":00" + shift.substring(shift.length());
+		}
+		else if(shift.contains("-") && shift.charAt(shift.length()-3) == '-'){
+			shift = shift.substring(0, shift.length()) + ":00";
+		}
+		return shift;
 	}
 }

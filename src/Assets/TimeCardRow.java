@@ -5,11 +5,12 @@ import java.util.TreeSet;
 
 public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow> {
 	private String name;
-	private boolean isMinor;
+	private boolean isMinor, isManager;
 
-	public TimeCardRow(String name, TreeSet<Day> week) {
+	public TimeCardRow(String name, boolean isManager, TreeSet<Day> week) {
 		super(week);
 		this.name = name;
+		this.isManager = isManager;
 		if (name.contains("*")) {
 			isMinor = true;
 			this.name = name.substring(0, name.length() - 1);
@@ -22,6 +23,14 @@ public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow>
 		for(Day r : other){
 			this.add(r);
 		}
+		
+		if(this.isManager != other.isManager && this.first().getDate().isBefore(other.first().getDate())){
+			this.isManager = other.isManager;
+		}
+
+		if(this.isMinor != other.isMinor && this.first().getDate().isBefore(other.first().getDate())){
+			this.isMinor = other.isMinor;
+		}
 	}
 
 	public String getName() {
@@ -30,6 +39,10 @@ public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow>
 
 	public boolean isMinor() {
 		return isMinor;
+	}
+
+	public boolean isManager(){
+		return isManager;
 	}
 
 	public Day getShift(LocalDate date) {
@@ -60,7 +73,7 @@ public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow>
 		}
 	}
 	public String toString(){
-		String val =  this.name + " |\t" + this.isMinor + " ";
+		String val =  this.name + " |\t" + this.isManager + " ";
 		for(Day i : this){
 			val += i.getShift() + "   ";
 		}
