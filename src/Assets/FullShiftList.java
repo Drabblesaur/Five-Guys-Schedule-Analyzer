@@ -18,12 +18,12 @@ public class FullShiftList extends TreeSet<TimeCardRow> {
     }
 
     public void mergeTimeCards(String hostName, String insertionName){
-        TimeCardRow host = this.get(hostName), insert = this.get("insertionName");
+        TimeCardRow host = this.get(hostName), insert = this.get(insertionName);
         if(host != null && insert != null){
             host.merge(insert);
             this.remove(insert);
         }else{
-            System.out.println("FAILED TO MERGE");
+            System.out.println("FAILED TO MERGE. Host found: " + !(host == null) + " and insert found: " + !(insert == null) + "");
         }
     }
 
@@ -33,5 +33,9 @@ public class FullShiftList extends TreeSet<TimeCardRow> {
             sum += r.getName() + "\t";
         }
         return sum;
+    }
+
+    public String getEmploymentRange(TimeCardRow employee){
+        return employee.getFirstDay().toString() + "-" + employee.getLastDay().toString();
     }
 }

@@ -20,9 +20,6 @@ public class ScheduleAnalyzer {
 		for(String path : paths) {
 			WeeklyShiftSheet sheet = ScheduleInterpreterA.convertToTimeArray(path);
 			fullList.add(sheet);
-
-			System.out.println(sheet.toString());
-			System.out.println();
 		}
 		return fullList;
 	}

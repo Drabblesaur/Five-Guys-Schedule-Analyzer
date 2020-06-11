@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 import Assets.FullShiftList;
-import Assets.TimeCardRow;
 import scheduleAnalyzer.ScheduleAnalyzer;
 import scheduleAnalyzer.WeeklyShiftSheet;
 
@@ -21,13 +20,5 @@ public class Starter {
 		TreeSet<WeeklyShiftSheet> r = ScheduleAnalyzer.getShiftSheetsFromPaths(paths);
 
 		FullShiftList s = ScheduleAnalyzer.shiftMerge(r);
-		System.out.println(s.size());
-		for(TimeCardRow p : s){
-			System.out.println(p.toString());
-		}
-
-		System.out.println(s.namesToString());
-		//s.mergeTimeCards("Ivori", "Alan");
-		//System.out.println(s.namesToString());
 	}
 }
