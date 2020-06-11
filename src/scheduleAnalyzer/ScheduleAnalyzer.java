@@ -1,10 +1,12 @@
 package scheduleAnalyzer;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import Assets.TimeCardRow;
 import scheduleReader.ScheduleInterpreterA;
+import Assets.FullShiftList;
 
 public class ScheduleAnalyzer {
 
@@ -32,8 +34,8 @@ public class ScheduleAnalyzer {
 	 * @param fullList the list of WeekleyShiftSheets that comes from getShiftsFromPaths
 	 * @return an ArrayList containing the shifts each person had 
 	 */
-	public static ArrayList<TimeCardRow> shiftMerge(TreeSet<WeeklyShiftSheet> fullList){
-		ArrayList<TimeCardRow> mergedShifts = new ArrayList<>();
+	public static FullShiftList shiftMerge(TreeSet<WeeklyShiftSheet> fullList){
+		FullShiftList mergedShifts = new FullShiftList();
 		//itterate through the time cards for each week, check if they are already in the list, then either add them to an existing TimeCard row or make a new entry
 		for(WeeklyShiftSheet selectedSheet : fullList){
 			for(TimeCardRow selectedRow : selectedSheet){

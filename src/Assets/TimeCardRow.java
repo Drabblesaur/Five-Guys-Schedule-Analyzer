@@ -57,19 +57,44 @@ public class TimeCardRow extends TreeSet<Day> implements Comparable<TimeCardRow>
 	public LocalDate getFirstDay() {
 		return this.first().getDate();
 	}
+
 	public LocalDate getLastDay() {
 		return this.last().getDate();
 	}
 
+	public Day getFirstShift(){
+		for(Day r : this){
+			if(!r.getShift().equalsIgnoreCase("OFF") && !r.getShift().equalsIgnoreCase("Requested off")){
+				return r;
+			}
+		}
+		return null;
+	}
 	public int hashCode() {
-		return name.hashCode() + this.hashCode();
+		return this.name.hashCode() + this.first().getDate().hashCode() + this.last().getDate().hashCode();
+	}
+
+	public boolean equals(Object other){
+		return (this.hashCode() == other.hashCode());
 	}
 
 	public int compareTo(TimeCardRow other) {
-		if (this.name.compareTo(other.name) != 0) {
-			return this.getFirstDay().compareTo(other.getFirstDay());
-		} else {
-			return this.name.compareTo(other.name);
+		int comp1 = this.getName().compareTo(other.getName());
+		if(comp1 == 0){
+			int comp2 = this.getFirstDay().compareTo(other.getFirstDay());
+			if(comp2 == 0){
+				if(this.isMinor == other.isMinor){
+					return 0;
+				} else if(this.isMinor == true && other.isMinor == false){
+					return -1;
+				} else{
+					return 1;
+				}
+			}else{
+				return comp2;
+			}
+		}else{
+			return comp1;
 		}
 	}
 	public String toString(){

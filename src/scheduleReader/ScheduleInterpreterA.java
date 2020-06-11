@@ -49,6 +49,11 @@ public class ScheduleInterpreterA {
 		return shifts;
 	}
 	
+	/**
+	 * Checks to see if a row is meant to show shifts or for something else
+	 * @param row the row to be checked
+	 * @return a boolean on if the row contains shifts
+	 */
 	private static boolean rowCheck(String[] row) {
 		//new line
 		if(row.length == 0) {
@@ -72,6 +77,12 @@ public class ScheduleInterpreterA {
 		}
 		return true;
 	}
+
+	/**
+	 * Re formats the raw data in cells in order to convert them to LocalDate
+	 * @param shift the raw cell contents
+	 * @return a String that has the reformatted time
+	 */
 	private static String convertToFormal(String shift){
 		//remove suffixes
 		if(shift.contains("cl") || shift.contains("CL")){
@@ -108,6 +119,14 @@ public class ScheduleInterpreterA {
 		}
 		else if(shift.contains("-") && shift.charAt(shift.length()-3) == '-'){
 			shift = shift.substring(0, shift.length()) + ":00";
+		}
+
+		//no shift
+		if(shift.equalsIgnoreCase("off")){
+			shift = "OFF";
+		}
+		if(shift.equalsIgnoreCase("r/o")){
+			shift = "Requested off";
 		}
 		return shift;
 	}
