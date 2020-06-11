@@ -2,7 +2,6 @@ package scheduleReader;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.TreeSet;
 
 import Assets.Day;
@@ -25,25 +24,19 @@ public class ScheduleInterpreterA {
 		}
 		return fullTimeCard;
 	}
+	
 	private static TreeSet<Day> getTime(String[] row, String[] header) {
 		TreeSet<Day> shifts = new TreeSet<>();
-		int entries = 0;
-		for(int i = 1; i < row.length && entries < 7; i++) {
-			if(row[i].length() > 0) {
-				String shift = (row[i]);
-				String dateS1;
-				
-				if(header[i].length() > 0) {
-					dateS1 = header[i].substring(header[i].indexOf(' ') + 1) + "/2019";;
-				}else {
-					dateS1 = header[i-1].substring(header[i-1].indexOf(' ') + 1) + "/2019";;
-				}
-				LocalDate dateS2 = LocalDate.parse(dateS1, DATE_FORMAT);
-				shifts.add(new Day(dateS2, shift));
-				entries++;
+		for(int i = 2; i <= 14; i += 2){
+			LocalDate date = LocalDate.parse(header[i-1].substring(header[i-1].indexOf(' ') + 1) + "/2019", DATE_FORMAT);
+			String shift;
+			if(row[i].length() > 0 && !row[i].contains("w/")){
+				shift = row[i];
+			}else{
+				shift = row[i-1];
 			}
+			shifts.add(new Day(date, shift));
 		}
-
 		return shifts;
 	}
 	
